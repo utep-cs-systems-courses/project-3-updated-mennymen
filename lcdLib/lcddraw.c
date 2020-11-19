@@ -37,6 +37,41 @@ void fillRectangle(u_char colMin, u_char rowMin, u_char width, u_char height,
   }
 }
 
+/*void drawLeftPaddle(u_char colMin, u_char rowMin ,u_int colorBGR)
+{
+  u_char colLimit = colMin + 5, rowLimit = rowMin + 15;
+  lcd_setArea(colMin, rowMin, colLimit - 1, rowLimit - 1);
+  u_int total = 75;
+  u_int c = 0;
+  while ((c++) < total) {
+    lcd_writeColor(colorBGR);
+  }
+  }*/
+
+void drawLeftPaddle(u_char colMin, u_char rowMin ,u_int colorBGR)
+{
+  u_char colLimit = colMin + 5, rowLimit = rowMin + 15;
+  lcd_setArea(colMin, rowMin, colLimit - 1, rowLimit - 1);
+  u_int total = 75;
+  u_int c = 0;
+  while ((c++) < total) {
+    lcd_writeColor(colorBGR);
+  }
+}
+
+void drawRightPaddle(u_char colMin, u_char rowMin ,u_int colorBGR)
+{
+  u_char colLimit = colMin + 5, rowLimit = rowMin + 15;
+  lcd_setArea(colMin, rowMin, colLimit - 1, rowLimit - 1);
+  u_int total = 75;
+  u_int c = 0;
+  while ((c++) < total) {
+    lcd_writeColor(colorBGR);
+  }
+}
+
+
+
 /** Clear screen (fill with color)
  *  
  *  \param colorBGR The color to fill screen
