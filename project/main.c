@@ -28,17 +28,15 @@ char ballSoundState = 0;
 char blink_state;
 char songCount = 0;
 
-void ballSoundAdvance()
+void ballSoundAdvance(char ballSoundState)
 {
   switch(ballSoundState){
   case 0:
     buzzer_set_period(5000);
-    ballSoundState++;
     break;
 
   case 1:
     buzzer_set_period(8000);
-    ballSoundState--;
     break;
   }
 }
@@ -101,7 +99,7 @@ void wdt_c_handler()
     soundCount++;
 
   } else if(soundCount == 5){
-    ballSoundAdvance;
+    //ballSoundAdvance;
     soundCount = 0;
     buzzer_set_period(0);
   }
@@ -122,7 +120,8 @@ void wdt_c_handler()
       if (x >= 110 && (y >= rightPaddlePos - 10 && y <= rightPaddlePos + 15)){
 	right = !right;
 	ballColorAdvance();
-	ballSoundAdvance();
+	//ballSoundAdvance();
+	ballSoundState = ballSoundUpdateState(ballSoundState);
 	soundCount++;
 
       } else if (x >= 110 && (y < rightPaddlePos - 10 || y > rightPaddlePos + 15)){
@@ -157,8 +156,9 @@ void wdt_c_handler()
       if (x >= 110 && y >= rightPaddlePos - 10 && y <= rightPaddlePos + 15){
 	right = !right;
 	ballColorAdvance();
-	ballSoundAdvance();
-	soundCount++;
+	//ballSoundAdvance();
+	ballSoundState = ballSoundUpdateState(ballSoundState);
+       	soundCount++;
 
       } else if (x >= 110 && (y < rightPaddlePos - 10 || y > rightPaddlePos + 15)){
 	fillRectangle(x,y,10,10, COLOR_BLACK);
@@ -193,7 +193,8 @@ void wdt_c_handler()
       if (x <= 10 && (y >= leftPaddlePos - 10 && y <= leftPaddlePos + 15)){
 	right = !right;
 	ballColorAdvance();
-	ballSoundAdvance();
+	//ballSoundAdvance();
+	ballSoundState = ballSoundUpdateState(ballSoundState);
 	soundCount++;
 
       } else if (x <= 10 && (y < leftPaddlePos - 10 || y > leftPaddlePos + 15)){
@@ -229,8 +230,9 @@ void wdt_c_handler()
       if (x <= 10 && (y >= leftPaddlePos - 10 && y <= leftPaddlePos + 15)){
 	right = !right;
 	ballColorAdvance();
-	ballSoundAdvance();
-	soundCount++;
+	//ballSoundAdvance();
+	ballSoundState = ballSoundUpdateState(ballSoundState);
+       	soundCount++;
 
       } else if (x <= 10 && (y < leftPaddlePos - 10 || y > leftPaddlePos + 15)){
 	fillRectangle(x,y,10,10, COLOR_BLACK);

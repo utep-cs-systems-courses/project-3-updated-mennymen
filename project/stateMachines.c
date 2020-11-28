@@ -16,3 +16,5 @@ void zelda_advance()
   play(zelda_notes[state]);
   state = (state+1)%32;
 }
+
+char ballSoundUpdateState(char ballSoundState);
