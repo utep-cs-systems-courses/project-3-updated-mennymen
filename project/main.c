@@ -4,8 +4,10 @@
 #include "lcddraw.h"
 #include "p2switches.h"
 #include "buzzer.h"
+#include "led.h"
+#include "stateMachines.h"
 
-#define LED_GREEN BIT6             // P1.6
+//#define LED_GREEN BIT6             // P1.6
 
 short redrawScreen = 1;
 u_int fontFgColor = COLOR_RED;
@@ -23,6 +25,8 @@ int p2score = 0;
 char p2char[3];
 char gameOn = 1;
 char ballSoundState = 0;
+char blink_state;
+char songCount = 0;
 
 void ballSoundAdvance()
 {
@@ -73,8 +77,26 @@ void wdt_c_handler()
 {
   static int secCount = 0;
   static int soundCount = 0;
+  static int blinkCount = 0;
   //P1OUT |= LED_GREEN;
   secCount ++;
+
+  if(!gameOn && blinkCount != 100){
+    leds_advance(blink_state);
+    blinkCount++;
+  } else if(!gameOn && blinkCount == 100){
+    blinkCount = 0;
+    blink_state = (blink_state+1)%3;
+    if(songCount < 32){
+      zelda_advance();
+      songCount++;
+    } else if(songCount >= 32){
+      play(0);
+      clearScreen(COLOR_BLACK);
+    }
+  }
+
+  
   if(soundCount > 0 && soundCount < 5){
     soundCount++;
 
@@ -228,9 +250,12 @@ void wdt_c_handler()
 	down = !down;
       }
     }
-
+    
+    //blink_state = (blink_state+1)%3;
     redrawScreen = 1;
-  }
+  } /*else{
+    leds_advance(blink_state);
+    } */ 
 }
 
 
@@ -255,7 +280,7 @@ void main()
 
   
   clearScreen(COLOR_BLACK);
-
+  
   for(int i = 0; i < screenWidth; i++)
     drawPixel(i, 20, COLOR_WHITE);
   
@@ -264,7 +289,7 @@ void main()
   drawString8x12(5, 0, p1char, COLOR_WHITE, COLOR_BLACK);
   drawString8x12(100, 0, p2char, COLOR_WHITE, COLOR_BLACK);
 
-  while (1) {/* forever */
+  while (gameOn) {/* forever */
     /* if (redrawScreen) {
       redrawScreen = 0;
       fillRectangle(20,20,50,50, fontFgColor);*/
@@ -308,4 +333,11 @@ void main()
     or_sr(0x10);/**< cpu off */
     P1OUT |= LED_GREEN;/* GREEN ON */
   }
+
+  while(!gameOn){
+    P1OUT &= ~LED_GREEN;/* GREEN OFF */
+    or_sr(0x10);/**< cpu off */
+    P1OUT |= LED_GREEN;/* GREEN ON */
+  }
+  
 }
