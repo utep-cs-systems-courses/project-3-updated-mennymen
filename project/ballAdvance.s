@@ -1,7 +1,6 @@
-	.data
-ballSound:
-	.word 0
-
+	.arch msp430g2553
+	.p2align 1,0
+	
 	.text
 jt:
 	.word option1		; jt[0]
@@ -10,22 +9,22 @@ jt:
 	
 	.global ballSoundUpdateState	
 ballSoundUpdateState:
-	mov.b r12, &ballSound
-	cmp.b #0, r12
-	jn end
+	mov.b r12, r13
+	cmp #3, r12
+	jhs end
 
-	add r12, r12
-	mov jt(r12), r0
+	add.b r13, r13
+	mov jt(r13), r0
 
 option1:
-	mov.b #1, &ballSound
+	mov.b #1, r13
 	jmp end
 
 option2:
-	mov.b #0, &ballSound
+	mov.b #0, r13
 	jmp end
 
 end:
-	mov.b &ballSound, r12
 	call #ballSoundAdvance
+	mov.b r13, r12
 	pop r0

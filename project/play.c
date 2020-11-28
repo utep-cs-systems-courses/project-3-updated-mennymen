@@ -4,7 +4,7 @@
 #include "buzzer.h"
 #include <string.h>
 
-/* I added this file with the function play to make it easier to play certain notes, but since I had to change the format of the notes, it is not as efficient as it was originally. Still, it helped efficiently to make songs.*/
+/* To keep things simple, I only left the nodes I needed to play the Zelda song, I reused this file from project 2.*/
 
 void play(unsigned char note)
 {

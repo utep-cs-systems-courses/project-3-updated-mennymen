@@ -10,7 +10,7 @@ static unsigned char zelda_notes[32] = {0x65,0x64,0xC5,0xE5,0xDC,0x64,0xB5,0xB4,
 					0xB4,0xD5};
 
 
-void zelda_advance()
+void zelda_advance() // Reused from project 2
 {
   static unsigned char state = 0;
   play(zelda_notes[state]);
