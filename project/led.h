@@ -10,7 +10,5 @@ extern unsigned char led_changed;
 
 void led_init();
 void led_update();
-void red50();
-void leds_advance(char blink_state);
 
 #endif // included

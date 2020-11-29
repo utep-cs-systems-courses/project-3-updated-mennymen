@@ -1,11 +1,13 @@
 #include <msp430.h>
 #include <libTimer.h>
+#include <stdlib.h>
 #include "lcdutils.h"
 #include "lcddraw.h"
 #include "p2switches.h"
 #include "buzzer.h"
 #include "led.h"
 #include "stateMachines.h"
+#include "play.h"
 
 short redrawScreen = 1;
 u_int fontFgColor = COLOR_RED;
@@ -27,97 +29,6 @@ char blink_state;
 char songCount = 0;
 char ballColorState = 3;
 
-void ballSoundAdvance(char ballSoundState)   // This function makes the ball bounce sounds 
-{
-  switch (ballSoundState) {
-  case 0:
-    buzzer_set_period(5000);
-    break;
-
-  case 1:
-    buzzer_set_period(8000);
-    break;
-  }
-}
-
-
-/*
-  void colorAdvance() // This function makes the ball change color whenever it touches something
-{
-  switch (ballColor) {
-  case COLOR_RED:
-    ballColor = COLOR_ORANGE;
-    break;
-
-  case COLOR_ORANGE:
-    ballColor = COLOR_YELLOW;
-    break;
-
-  case COLOR_YELLOW:
-    ballColor = COLOR_GREEN;
-    break;
-
-  case COLOR_GREEN:
-    ballColor = COLOR_BLUE;
-    break;
-
-  case COLOR_BLUE:
-    ballColor = COLOR_VIOLET;
-    break;
-
-  case COLOR_VIOLET:
-    ballColor = COLOR_RED;
-    break;
-  }
-}
-*/
-
-
-
-
-signed char ballColorAdvance() // This function makes the ball change color whenever it touches something
-{
-  switch (ballColorState) {
-  case 0:
-    ballColor = COLOR_ORANGE;
-    return -1;
-    break;
-
-  case 1:
-    ballColor = COLOR_YELLOW;
-    break;
-
-  case 2:
-    ballColor = COLOR_GREEN;
-    break;
-
-  case 3:
-    ballColor = COLOR_BLUE;
-    break;
-
-  case 4:
-    ballColor = COLOR_VIOLET;
-    break;
-
-  case 5:
-    ballColor = COLOR_RED;
-    break;
-  }
-  return 1;
-}
-
-/*
-void colorAdvance(){
-  signed char color = ballColorAdvance();
-  if(color < 0){
-    ballColorState = 5;
-
-  } else
-    ballColorState--;      
-}
-
-*/
-
 void wdt_c_handler()
 {
   static int secCount = 0;
@@ -130,7 +41,7 @@ void wdt_c_handler()
     blinkCount++;
   } else if (!gameOn && blinkCount == 100){
     blinkCount = 0;
-    blink_state = (blink_state+1)%3;
+    blink_state = (blink_state+1)%5;
     if (songCount < 32){  // It will only play the song once 
       zelda_advance();
       songCount++;
@@ -347,7 +258,6 @@ void main()
 	drawRightPaddle(120, rightPaddlePos, COLOR_WHITE);
       }
     }
-    //str[4] = 0;
     
     P1OUT &= ~LED_GREEN;/* GREEN OFF */
     or_sr(0x10);/**< cpu off */
@@ -359,5 +269,4 @@ void main()
     or_sr(0x10);/**< cpu off */
     P1OUT |= LED_GREEN;/* GREEN ON */
   }
-  
 }
