@@ -13,10 +13,10 @@ u_char width = screenWidth, height = screenHeight;
 char x = screenWidth/2;
 char y = screenHeight/2;
 char down = 1;
-char right = 1;
+char right = 0;
 char leftPaddlePos = 30;
 char rightPaddlePos = 30;
-u_int ballColor = COLOR_YELLOW;
+u_int ballColor = COLOR_BLUE;
 int p1score = 0;
 char p1char[3];
 int p2score = 0;
@@ -25,6 +25,7 @@ char gameOn = 1;
 char ballSoundState = 0;
 char blink_state;
 char songCount = 0;
+char ballColorState = 3;
 
 void ballSoundAdvance(char ballSoundState)   // This function makes the ball bounce sounds 
 {
@@ -39,7 +40,9 @@ void ballSoundAdvance(char ballSoundState)   // This function makes the ball bou
   }
 }
 
-void ballColorAdvance() // This function makes the ball change color whenever it touches something
+
+/*
+  void colorAdvance() // This function makes the ball change color whenever it touches something
 {
   switch (ballColor) {
   case COLOR_RED:
@@ -67,7 +70,53 @@ void ballColorAdvance() // This function makes the ball change color whenever it
     break;
   }
 }
+*/
 
+
+
+
+signed char ballColorAdvance() // This function makes the ball change color whenever it touches something
+{
+  switch (ballColorState) {
+  case 0:
+    ballColor = COLOR_ORANGE;
+    return -1;
+    break;
+
+  case 1:
+    ballColor = COLOR_YELLOW;
+    break;
+
+  case 2:
+    ballColor = COLOR_GREEN;
+    break;
+
+  case 3:
+    ballColor = COLOR_BLUE;
+    break;
+
+  case 4:
+    ballColor = COLOR_VIOLET;
+    break;
+
+  case 5:
+    ballColor = COLOR_RED;
+    break;
+  }
+  return 1;
+}
+
+/*
+void colorAdvance(){
+  signed char color = ballColorAdvance();
+  if(color < 0){
+    ballColorState = 5;
+
+  } else
+    ballColorState--;      
+}
+
+*/
 
 void wdt_c_handler()
 {
@@ -110,12 +159,12 @@ void wdt_c_handler()
 
       if (y >= 150){ // If it touches the bottom wall, it will now go up
 	down = !down;
-	ballColorAdvance();
+	colorAdvance();
       }
 
       if (x >= 110 && (y >= rightPaddlePos - 10 && y <= rightPaddlePos + 15)){ // If it collides with the right paddle
 	right = !right; // It will now go to the left
-	ballColorAdvance();
+	colorAdvance();
 	ballSoundState = ballSoundUpdateState(ballSoundState); // Play bouncing sound
 	soundCount++;
 
@@ -144,12 +193,12 @@ void wdt_c_handler()
  
       if (y <= 21){ // If it collides with the top wall, it will now go up
 	down = !down;
-	ballColorAdvance();
+	colorAdvance();
       }
 
       if (x >= 110 && y >= rightPaddlePos - 10 && y <= rightPaddlePos + 15){ // If it touches the right paddle, it will now move to the left
 	right = !right;
-	ballColorAdvance();
+	colorAdvance();
 	ballSoundState = ballSoundUpdateState(ballSoundState);
        	soundCount++;
 
@@ -179,12 +228,12 @@ void wdt_c_handler()
 
       if (y >= 150){ // If it collides with the bottom wall, it will now go up
 	down = !down;
-	ballColorAdvance();
+	colorAdvance();
       }
 
       if (x <= 10 && (y >= leftPaddlePos - 10 && y <= leftPaddlePos + 15)){ // If it collides with the left paddle
 	right = !right;
-	ballColorAdvance();
+	colorAdvance();
 	ballSoundState = ballSoundUpdateState(ballSoundState);
 	soundCount++;
 
@@ -214,12 +263,12 @@ void wdt_c_handler()
 
       if (y <= 21){ // If it touches the top wall, it will now go down
 	down = !down;
-	ballColorAdvance();
+	colorAdvance();
       }
 
       if (x <= 10 && (y >= leftPaddlePos - 10 && y <= leftPaddlePos + 15)){ // If it touches the left paddle
 	right = !right;
-	ballColorAdvance();
+	colorAdvance();
 	ballSoundState = ballSoundUpdateState(ballSoundState);
        	soundCount++;
 

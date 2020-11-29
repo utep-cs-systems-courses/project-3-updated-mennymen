@@ -18,3 +18,4 @@ void zelda_advance() // Reused from project 2
 }
 
 char ballSoundUpdateState(char ballSoundState);
+void colorAdvance();
