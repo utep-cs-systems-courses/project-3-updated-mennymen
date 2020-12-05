@@ -36,16 +36,7 @@ void wdt_c_handler()
   static int blinkCount = 0;
   secCount ++;
 
-  if (!gameOn && blinkCount != 100) {   // When the game is over, the program will start blinking the red led and play a song 
-    leds_advance(blink_state);
-    blinkCount++;
-  } else if (!gameOn && blinkCount == 100){
-    blinkCount = 0;
-    blink_state = (blink_state+1)%5;
-    if (songCount < 32){  // It will only play the song once 
-      zelda_advance();
-      songCount++;
-    } else if (songCount >= 32){  // After playing the song, the screen goes blank, but the red led keeps cycling through its states
+  if (!gameOn && songCount == 32){  // After playing the song, the screen goes blank and some stars are drawn on the screen and the red led keeps cycling
       play(0);
       clearScreen(COLOR_BLACK);
       drawStar(50,50, COLOR_GREEN);
@@ -60,8 +51,22 @@ void wdt_c_handler()
       drawStar(87, 115, COLOR_ORANGE);
       drawStar(97,5, COLOR_VIOLET);
       drawStar(108,18, COLOR_BLUE);
+      songCount = 33;
     }
-  }
+
+  else if (!gameOn && blinkCount != 100) {   // When the game is over, the program will start blinking the red led and play a song 
+    leds_advance(blink_state);
+    blinkCount++;
+  } else if (!gameOn && blinkCount == 100){
+    blinkCount = 0;
+    blink_state = (blink_state+1)%5;
+    if (songCount < 32){  // It will only play the song once 
+      zelda_advance();
+      songCount++;
+    }
+
+  } 
+
 
   
   if(soundCount > 0 && soundCount < 5){ // This is used to make the bouncing sound play for 1/50 of a second 
