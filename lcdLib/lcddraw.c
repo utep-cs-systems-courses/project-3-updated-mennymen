@@ -4,6 +4,16 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 
+char star[9][9] = {
+  {0,0,0,0,1,0,0,0,0},
+  {0,0,0,1,1,1,0,0,0},
+  {0,0,1,1,1,1,1,0,0},
+  {1,1,1,1,1,1,1,1,1},
+  {0,0,1,1,1,1,1,0,0},
+  {0,1,1,1,1,1,1,1,0},
+  {0,1,1,1,0,1,1,1,0},
+  {0,1,1,0,0,0,1,1,0},
+  {0,1,0,0,0,0,0,1,0}};
 
 /** Draw single pixel at x,row 
  *
@@ -70,6 +80,24 @@ void drawRightPaddle(u_char colMin, u_char rowMin ,u_int colorBGR)
   }
 }
 
+
+void drawStar(u_char colMin, u_char rowMin, u_int colorBGR){
+  u_char row = 0;
+  u_char col = 0;
+  for(int i = 0; i < 9; i++){
+    col = 0;
+    for(int j = 0; j < 9; j++){
+      if(star[row][col] == 1)
+	drawPixel(col + colMin, row + rowMin, colorBGR);
+
+      else
+	drawPixel(col + colMin, row + rowMin, COLOR_BLACK);
+
+      col++;
+    }
+    row++;
+  }
+}
 
 
 /** Clear screen (fill with color)

@@ -48,6 +48,18 @@ void wdt_c_handler()
     } else if (songCount >= 32){  // After playing the song, the screen goes blank, but the red led keeps cycling through its states
       play(0);
       clearScreen(COLOR_BLACK);
+      drawStar(50,50, COLOR_GREEN);
+      drawStar(100,100, COLOR_RED);
+      drawStar(124,79, COLOR_YELLOW);
+      drawStar(21, 81, COLOR_ORANGE);
+      drawStar(64,37, COLOR_VIOLET);
+      drawStar(5,24, COLOR_BLUE);
+      drawStar(120,8, COLOR_GREEN);
+      drawStar(40,130, COLOR_RED);
+      drawStar(79,98, COLOR_YELLOW);
+      drawStar(87, 115, COLOR_ORANGE);
+      drawStar(97,5, COLOR_VIOLET);
+      drawStar(108,18, COLOR_BLUE);
     }
   }
 

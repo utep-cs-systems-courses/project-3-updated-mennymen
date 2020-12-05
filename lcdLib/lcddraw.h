@@ -28,7 +28,7 @@ void drawLeftPaddle(u_char colMin, u_char rowMin, u_int colorBGR);
 
 void drawRightPaddle(u_char colMin, u_char rowMin, u_int colorBGR);
 
-
+void drawStar(u_char colMin, u_char rowMin, u_int colorBGR);
 /** Clear screen (fill with color)
  *  
  *  \param colorBGR The color to fill screen
