@@ -34,6 +34,7 @@ void wdt_c_handler()
   static int secCount = 0;
   static int soundCount = 0;
   static int blinkCount = 0;
+  static int starCount = 0;
   secCount ++;
 
   if (!gameOn && songCount == 32){  // After playing the song, the screen goes blank and some stars are drawn on the screen and the red led keeps cycling
@@ -52,9 +53,11 @@ void wdt_c_handler()
       drawStar(97,5, COLOR_VIOLET);
       drawStar(108,18, COLOR_BLUE);
       songCount = 33;
-    }
-
-  else if (!gameOn && blinkCount != 100) {   // When the game is over, the program will start blinking the red led and play a song 
+  
+  } else if(!gameOn && songCount == 33 && starCount == 50){ // After a bit, the screen goes black  
+    clearScreen(COLOR_BLACK);
+    
+  } else if (!gameOn && blinkCount != 100) {   // When the game is over, the program will start blinking the red led and play a song 
     leds_advance(blink_state);
     blinkCount++;
   } else if (!gameOn && blinkCount == 100){
@@ -64,6 +67,9 @@ void wdt_c_handler()
       zelda_advance();
       songCount++;
     }
+
+    else
+      starCount++;
 
   } 
 
